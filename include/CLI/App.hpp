@@ -2036,7 +2036,7 @@ class App {
             for(auto rit = config_files.rbegin(); rit != config_files.rend(); ++rit) {
                 std::string config_file = *rit;
                 auto path_result = detail::check_path(config_file.c_str());
-                if(path_result == detail::path_type::nonexistent && !default_config_folder_.empty()) {
+                if(!default_config_folder_.empty()) {
                     // Try to find the config file from its name in default config folder
                     std::string config_file_path = default_config_folder_;
                     if(default_config_folder_.back() != '/' && default_config_folder_.back() != '\\') {
