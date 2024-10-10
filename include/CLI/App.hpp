@@ -901,10 +901,10 @@ class App {
 #endif
 
     /// Set a configuration ini file option, or clear it if no name passed
-    Option *set_config(std::string option_name = "",
-                       std::string default_filename = "",
-                       const std::string &help_message = "Read an ini file",
-                       const std::string & default_config_root_folder = "",
+    Option *set_config(std::string option_name,
+                       std::string default_filename,
+                       const std::string &help_message,
+                       const std::string &default_config_root_folder,
                        bool config_required = false) {
 
         // Remove existing config if present
@@ -912,7 +912,7 @@ class App {
             remove_option(config_ptr_);
             config_ptr_ = nullptr;  // need to remove the config_ptr completely
         }
-        
+
         // Set the default config folder
         default_config_folder_ = default_config_root_folder;
 
@@ -929,6 +929,14 @@ class App {
         }
 
         return config_ptr_;
+    }
+
+    Option *set_config(std::string option_name = "",
+                       std::string default_filename = "",
+                       const std::string &help_message = "Read an ini file",
+                       bool config_required = false) {
+
+        return set_config(option_name, default_filename, help_message, "", config_required);
     }
 
     /// Removes an option from the App. Takes an option pointer. Returns true if found and removed.
@@ -2028,10 +2036,10 @@ class App {
             for(auto rit = config_files.rbegin(); rit != config_files.rend(); ++rit) {
                 std::string config_file = *rit;
                 auto path_result = detail::check_path(config_file.c_str());
-                if (path_result == detail::path_type::nonexistent && !default_config_folder_.empty()) {
+                if(path_result == detail::path_type::nonexistent && !default_config_folder_.empty()) {
                     // Try to find the config file from its name in default config folder
                     std::string config_file_path = default_config_folder_;
-                    if (default_config_folder_.back() != '/' && default_config_folder_.back() != '\\') {
+                    if(default_config_folder_.back() != '/' && default_config_folder_.back() != '\\') {
                         // Add folder separator
                         config_file_path += '/';
                     }
